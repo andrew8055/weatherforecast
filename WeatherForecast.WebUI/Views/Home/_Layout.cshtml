@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/css/weatherForecast.css">
+</head>
+<body>
+    <form class="form-inline" role="form" id="addCity" action="@Url.Action("Index", "Home")">
+        <div class="form-group col-sm-offset-4">
+            <label class="sr-only" for="inputCity">City</label>
+            <input type="city" class="form-control" id="inputCity" placeholder="Enter city" />
+        </div>
+        <button type="submit" class="btn btn-default" id="add">Добавить</button>
+        <button type="submit" class="btn btn-default" id="showForecast">Найти</button>
+    </form>
+
+    <div class="row container" id="content">
+        <div class="col-sm-3">
+            <ul class="list-group" id="cityList"></ul>
+        </div>
+        <div class="col-sm-8 text-center" id="forecasts">@RenderBody()</div>
+    </div>
+    <script type="text/javascript" src="~/Scripts/jquery.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.cookie.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="~/Scripts/weatherForecast.js"></script>
+</body>
+</html>

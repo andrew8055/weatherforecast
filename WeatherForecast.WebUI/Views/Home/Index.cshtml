@@ -1,0 +1,55 @@
+﻿@using WeatherForecast.WebUI.Domain
+@model Dictionary<string, Forecast>
+
+@{
+    Layout = "_Layout.cshtml";
+    int counter = 0;
+}
+
+@foreach(var forecast in @Model)
+{
+    <div childnumber="@counter" id="cityForecast">
+        <h2>@forecast.Key</h2>
+        <div class="btn-group" id="infSelection" childnumber="@counter">
+            <button class="btn btn-success active" id="yandexWeather">Yandex Weather</button>
+            <button class="btn btn-success" id="openWeatherMap">OpenWeatherMap</button>
+        </div><br /><br />
+        <div class="row">
+            @foreach (var forecastSort in forecast.Value.DayForecasts.GroupBy(x => x.Date.Date).OrderBy(x => x.Key.Date))
+            {
+                <div class="col-sm-4">
+                    @foreach (var forecastByDay in forecastSort)
+                    {
+                        if (forecastByDay.ForecastProvider.Equals(ForecastProviders.YandexWeather))
+                        {
+                            <div weatherinf="YW">
+                                <h3>@forecastSort.Key.ToString("dd.MM.yyyy")</h3>
+                                <h5>Температура днем/ночью: @forecastByDay.TemperatureDay/@forecastByDay.TemperatureNight °C</h5><br />
+                                <h5>Скорость ветра днем/ночью: @forecastByDay.WindSpeedDay/@forecastByDay.WindSpeedNight м/с</h5><br />
+                                <h5>Влажность днем/ночью: @forecastByDay.HumidityDay/@forecastByDay.HumidityNight %</h5><br />
+                                <h5>Давление днем/ночью: @forecastByDay.PressureDay/@forecastByDay.PressureNight мм рт. ст.</h5><br />
+                            </div>
+                        }
+                        if (forecastByDay.ForecastProvider.Equals(ForecastProviders.OpenWeather))
+                        {
+                            <div weatherinf="OWM" style="display: none;">
+                                <h3>@forecastSort.Key.ToString("dd.MM.yyyy")</h3>
+                                <h5>Температура днем/ночью: @forecastByDay.TemperatureDay/@forecastByDay.TemperatureNight °C</h5><br />
+                                <h5>Скорость ветра: @forecastByDay.WindSpeedDay м/с</h5><br />
+                                <h5>Влажность: @forecastByDay.HumidityDay %</h5><br />
+                                <h5>Давление: @forecastByDay.PressureDay мм рт. ст.</h5><br />
+                            </div>
+                        }
+                    }
+                </div>
+            }
+            
+            @if(forecast.Value.DayForecasts == null || forecast.Value.DayForecasts.Count.Equals(0))
+            {
+                <h3>Город с таким именем не найден</h3>
+            }
+        </div>
+    </div>
+    
+    counter++;
+}
